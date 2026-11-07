@@ -68,7 +68,7 @@ validate_config() {
   python3 -c "
 import sys
 f = float('$MEM_FRACTION_STATIC')
-sys.exit(0 if 0.05 < f < 0.95 else 1)" || fail "MEM_FRACTION_STATIC must be in (0.05, 0.95)"
+sys.exit(0 if 0.05 < f <= 0.98 else 1)" || fail "MEM_FRACTION_STATIC must be in (0.05, 0.98]"
   [[ "$ATTENTION_BACKEND" == flashinfer || "$ATTENTION_BACKEND" == triton ]] \
     || fail "ATTENTION_BACKEND must be one of: flashinfer, triton"
   [[ "$KV_CACHE_DTYPE" == bfloat16 || "$KV_CACHE_DTYPE" == fp8_e4m3 ]] \
