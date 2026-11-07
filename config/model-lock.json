@@ -1,0 +1,39 @@
+{
+  "target": {
+    "model_id": "ricursiveAI/Ripple-65B-Preview-NVFP4",
+    "license": "apache-2.0",
+    "revision": "99eea4477a001a41b86914e41feb4b2ed86105e5",
+    "dtype": "bfloat16",
+    "quant_method": "modelopt",
+    "quant_algo": "NVFP4",
+    "quant_group_size": 16,
+    "quantized": ["Linear (MLP gate/up/down)"],
+    "kept_bf16": ["attention q/k/v/o/g projections", "lm_head", "model.embed_tokens"],
+    "shards": 6,
+    "total_size_bytes": 57213636640,
+    "architectures": ["RicursiveForCausalLM"]
+  },
+  "draft": {
+    "model_id": "ricursiveAI/Ripple-65B-Preview-DFlash2",
+    "license": "apache-2.0",
+    "revision": "35609b3be3dd08a822b3ba1257c1ea5dd6f87632",
+    "architectures": ["DFlash2DraftModel"],
+    "dtype": "bfloat16",
+    "total_size_bytes": 8075513104,
+    "layers": 5,
+    "target_layer_ids": [1, 20, 39, 58, 77],
+    "no_rope_layers": [4],
+    "window_size": 16384,
+    "num_draft_tokens": 32
+  },
+  "vendor_source": {
+    "repository": "ricursiveAI/Ripple-65B-Preview-NVFP4",
+    "revision": "99eea4477a001a41b86914e41feb4b2ed86105e5",
+    "directory": "inference/local"
+  },
+  "vendored": {
+    "inference/local/model.py": "007ec77d0d64d3007d68a256f726ff69318abf1a45ab5de08828979425e5b986",
+    "inference/local/ripple_format.py": "19e432554ad48c57a1b67b989695ff4e35a44ac769821ad92ba229ecf5266ace",
+    "inference/local/spark.py": "17cbc3414673d9e0e98de82360e485e9b73c9a2bbc9c93f39c09e2ea2548a8e6"
+  }
+}
