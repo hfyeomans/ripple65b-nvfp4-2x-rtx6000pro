@@ -1,0 +1,9 @@
+{
+  "profiles": [
+    {"name": "default-131k", "options": {"gpus": "0,1", "tp": "2", "kv": "bfloat16", "frac": "0.78", "swa": "0.8", "maxlen": "131072"}},
+    {"name": "1m-fp8", "options": {"gpus": "0,1", "tp": "2", "kv": "fp8_e4m3", "frac": "0.90", "swa": "0.02", "maxlen": "1048576"}},
+    {"name": "256k", "options": {"gpus": "0,1", "tp": "2", "kv": "bfloat16", "frac": "0.78", "swa": "0.8", "maxlen": "262144"}},
+    {"name": "tp1-131k", "options": {"gpus": "0", "tp": "1", "kv": "bfloat16", "frac": "0.90", "swa": "0.02", "maxlen": "131072"}},
+    {"name": "tp1-262k", "options": {"gpus": "0", "tp": "1", "kv": "bfloat16", "frac": "0.90", "swa": "0.02", "maxlen": "262144"}}
+  ]
+}
