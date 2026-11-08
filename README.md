@@ -15,6 +15,16 @@ group size 16) for the MLP layers, BF16 for attention, embeddings and LM head** 
 versus 120.7 GB for the BF16 repo. This recipe adds the vendor's **native DFlash2 speculative
 decoding** (32 draft tokens, 16K draft window), the setup their shipped recipe targets.
 
+Checkpoints first. Download the pinned snapshots into your hub cache once:
+
+```sh
+export HF_HOME=/models_engrams/huggingface HF_HUB_CACHE=/models_engrams/huggingface/hub
+hf download ricursiveAI/Ripple-65B-Preview-NVFP4 --revision 99eea4477a001a41b86914e41feb4b2ed86105e5
+hf download ricursiveAI/Ripple-65B-Preview-DFlash2 --revision 35609b3be3dd08a822b3ba1257c1ea5dd6f87632
+```
+
+Both are pinned in `config/model-lock.json` and `scripts/doctor.py` verifies them.
+
 ```sh
 ./prepare.sh            # pull the pinned SGLang image once (already pulled for the BF16 recipe)
 ./doctor.sh             # docker, image, GPUs, NVFP4 snapshot, DFlash2 draft, port
