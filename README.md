@@ -72,3 +72,7 @@ Run the 1M profile with
 ## Notes
 
 The engine story, memory math, benchmark receipts, and the tuning map live in the sibling planning repo, `ricursiveAI-2x-rtx6000pro-plan`, which is optional for running this recipe. Every number above has a receipt under `logs/`.
+
+- Marlin backend retested 2026-11-08: 33-39 percent slower than flashinfer_cutlass on FP4 GEMMs. Not adopted.
+- Head-to-head against the BF16 recipe on AIME, GPQA-Diamond, and a 124k needle, five repeats: no detectable quality difference.
+- Profile contract check: `python3 .omp/skills/verify-recipe-profiles/verify_profiles.py`.
