@@ -28,6 +28,7 @@ export DRAFT_SNAPSHOT_DIR=${DRAFT_SNAPSHOT_DIR:-$HF_CACHE_ROOT/hub/models--ricur
 export IMAGE=${IMAGE:-lmsysorg/sglang:v0.5.19@sha256:d6e7288627be8b02be88e4bba38e73f6d50e2826869f753c13a4c4385ab3eda9}
 export CONTAINER_NAME=${CONTAINER_NAME:-ripple65b-nvfp4-sglang-tp2}
 export RUNTIME_VOLUME=${RUNTIME_VOLUME:-ripple65b-nvfp4-runtime}
+export PROFILE=${PROFILE:-}
 export GPUS=${GPUS:-0,1}
 export TP_SIZE=${TP_SIZE:-2}
 export HOST=${HOST:-0.0.0.0}
@@ -48,6 +49,28 @@ export STOP_TIMEOUT=${STOP_TIMEOUT:-45}
 export RESTART_POLICY=${RESTART_POLICY:-no}
 export DOCKER_RUN_FLAGS=${DOCKER_RUN_FLAGS:-}
 export PYTHONDONTWRITEBYTECODE=1
+
+# Named profiles. PROFILE=<name> applies one documented set of options and wins over
+# .env and built-in defaults for the keys it sets. See the README profile table.
+apply_profile() {
+  case "${PROFILE:-}" in
+    '')
+      : ;;
+    default-131k)
+      export GPUS=0,1 TP_SIZE=2 KV_CACHE_DTYPE=bfloat16 MEM_FRACTION_STATIC=0.78 SWA_RATIO=0.8 MAX_MODEL_LEN=131072 ;;
+    1m-fp8)
+      export GPUS=0,1 TP_SIZE=2 KV_CACHE_DTYPE=fp8_e4m3 MEM_FRACTION_STATIC=0.90 SWA_RATIO=0.02 MAX_MODEL_LEN=1048576 ;;
+    256k)
+      export GPUS=0,1 TP_SIZE=2 KV_CACHE_DTYPE=bfloat16 MEM_FRACTION_STATIC=0.78 SWA_RATIO=0.8 MAX_MODEL_LEN=262144 ;;
+    tp1-131k)
+      export GPUS=0 TP_SIZE=1 KV_CACHE_DTYPE=bfloat16 MEM_FRACTION_STATIC=0.90 SWA_RATIO=0.02 MAX_MODEL_LEN=131072 ;;
+    tp1-262k)
+      export GPUS=0 TP_SIZE=1 KV_CACHE_DTYPE=bfloat16 MEM_FRACTION_STATIC=0.90 SWA_RATIO=0.02 MAX_MODEL_LEN=262144 ;;
+    *)
+      fail "unknown PROFILE '$PROFILE'; valid: default-131k, 1m-fp8, 256k, tp1-131k, tp1-262k" ;;
+  esac
+}
+apply_profile
 
 STATE_DIR=$REPO_ROOT/.state
 LOG_DIR=$REPO_ROOT/logs

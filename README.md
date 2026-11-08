@@ -33,19 +33,28 @@ curl http://127.0.0.1:30001/v1/chat/completions -H 'Content-Type: application/js
 
 ```mermaid
 flowchart LR
-  A["Default<br/>131K · BF16 KV · fraction 0.78<br/>pool 305,088"] --> B["1M<br/>fp8 KV · fraction 0.90 · SWA 0.02<br/>pool 2,466,752"]
+  A["default-131k<br/>pool 305,088"] --> B["1m-fp8<br/>pool 2,466,752"]
   A --> C["256K<br/>BF16 KV · MAX_MODEL_LEN 262144"]
   A --> D["TP1<br/>one GPU · fraction 0.90 · SWA 0.02"]
 ```
 
-| Profile | KV | Fraction | SWA | Pool tokens | Largest single request verified |
-| --- | --- | --- | --- | --- | --- |
-| Default 131K | bfloat16 | 0.78 | 0.8 | 305,088 | 114,725 |
-| 1M | fp8_e4m3 | 0.90 | 0.02 | 2,466,752 | 787,537 |
-| TP1, 128K | bfloat16 | 0.90 | 0.02 | 277,952 | 112,037 |
+| Pool tokens and largest single request verified: default-131k 305,088 / 114,725,
+| 1m-fp8 2,466,752 / 787,537, tp1 277,952 / 112,037.
 
 Run the 1M profile with
-`KV_CACHE_DTYPE=fp8_e4m3 MAX_MODEL_LEN=1048576 MEM_FRACTION_STATIC=0.90 SWA_RATIO=0.02 ./start.sh restart`.
+`PROFILE=1m-fp8 ./start.sh restart`.
+
+## Profiles
+
+`PROFILE=<name> ./start.sh` applies one named set of options.
+
+| Profile | GPUS | TP | KV | Fraction | SWA | MAX_MODEL_LEN |
+| --- | --- | --- | --- | --- | --- | --- |
+| default-131k | 0,1 | 2 | bfloat16 | 0.78 | 0.8 | 131072 |
+| 1m-fp8 | 0,1 | 2 | fp8_e4m3 | 0.90 | 0.02 | 1048576 |
+| 256k | 0,1 | 2 | bfloat16 | 0.78 | 0.8 | 262144 |
+| tp1-131k | 0 | 1 | bfloat16 | 0.90 | 0.02 | 131072 |
+| tp1-262k | 0 | 1 | bfloat16 | 0.90 | 0.02 | 262144 |
 
 ## Measured on this host
 
